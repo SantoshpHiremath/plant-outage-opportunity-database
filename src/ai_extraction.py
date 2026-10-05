@@ -1,25 +1,18 @@
 """
-AI-assisted extraction: the posting's title task is "Entwicklung einer
-Datenbank mit KI-Unterstuetzung zur vorlaeufigen Ermittlung ... von
-Geschaeftsmoeglichkeiten" -- AI-assisted preliminary identification of
+AI-assisted extraction: AI-assisted preliminary identification of
 business opportunities. The realistic shape of that in this domain is
 turning unstructured text (a news snippet, a press release, an outage
 schedule announcement) into a structured, candidate opportunity record
 a human then reviews and qualifies.
 
-IMPORTANT -- read before citing this module anywhere: this sandbox has
-no live LLM API access (no API key, no network path to an LLM
-provider -- checked directly, matching the same honest disclosure used
-throughout this whole application campaign, e.g. llm-eval-pipeline and
-rag-tool-agent-demo). `MockExtractionClient` is a real, deterministic,
-rule-based extractor (regex + keyword matching against a small
-controlled vocabulary of reactor types and service categories) that
-implements the exact same interface a real LLM-backed client would.
-`RealAnthropicExtractionClient` is real, complete code that would call
-a live Anthropic API if given a key -- it has never actually been
-executed against a live model in this environment, and raises
-explicitly rather than silently falling back to the mock if
-instantiated without one.
+`MockExtractionClient` is a deterministic, rule-based extractor (regex +
+keyword matching against a small controlled vocabulary of reactor types
+and service categories) that implements the same interface a live
+LLM-backed client would, so the pipeline runs and is testable without an
+API key. `RealAnthropicExtractionClient` is the live-API counterpart: it
+calls the Anthropic API when given a key and raises explicitly, rather
+than silently falling back to the mock, if instantiated without one.
+Its response parsing is not yet implemented.
 """
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
@@ -117,13 +110,11 @@ class MockExtractionClient(ExtractionClient):
 
 
 class RealAnthropicExtractionClient(ExtractionClient):
-    """Real, complete implementation of what a live LLM-backed
-    extractor would look like -- structured-output extraction via the
-    Anthropic API. This has never been executed against a live model
-    in this environment: instantiating it without a real API key
-    raises immediately rather than silently degrading to mock
-    behavior, so a caller can never be misled about which client is
-    actually running."""
+    """Live LLM-backed extractor: structured-output extraction via the
+    Anthropic API. It has not been run against a live model yet.
+    Instantiating it without a real API key raises immediately rather
+    than silently degrading to mock behavior, so a caller always knows
+    which client is running."""
 
     def __init__(self, api_key: str | None = None, model: str = "claude-sonnet-4-5"):
         if not api_key:
@@ -141,9 +132,8 @@ class RealAnthropicExtractionClient(ExtractionClient):
             import anthropic
         except ImportError as exc:
             raise RuntimeError(
-                "The 'anthropic' package is not installed. This code path has "
-                "never been executed in this environment -- see the README's "
-                "honest-disclosure section."
+                "The 'anthropic' package is not installed. Install it to use "
+                "the live client -- see the README's Notes section."
             ) from exc
 
         client = anthropic.Anthropic(api_key=self.api_key)
@@ -160,12 +150,10 @@ class RealAnthropicExtractionClient(ExtractionClient):
             max_tokens=300,
             messages=[{"role": "user", "content": prompt}],
         )
-        # A real implementation would parse response.content here into
-        # an ExtractedOpportunityCandidate. Left unimplemented beyond
-        # this point since this path has never actually run -- see
-        # README for why, rather than fabricate parsing logic that has
-        # never been exercised against a real model response.
+        # Parsing response.content into an ExtractedOpportunityCandidate
+        # is left for when this path is run against a live model, so the
+        # parsing logic can be written against real responses.
         raise NotImplementedError(
-            "Response parsing was never implemented or tested since this "
-            "class has never been run against a live API in this environment."
+            "Response parsing is not implemented yet; this class has not "
+            "been run against a live API."
         )

@@ -4,8 +4,7 @@ plants, outage events, service categories, and opportunities, plus the
 score-and-insert pipeline that ties src/scoring.py to the database.
 Kept as plain, explicit SQL (via sqlite3's parameterized queries, so
 no manual string-concatenation SQL-injection risk anywhere in this
-project) rather than an ORM, since the posting specifically names
-"SQL oder vergleichbar" as the target skill being assessed.
+project) rather than an ORM, so the SQL stays visible and easy to audit.
 """
 import sqlite3
 

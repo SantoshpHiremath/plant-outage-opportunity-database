@@ -1,17 +1,13 @@
 """
-Priority scoring for business opportunities: the posting names "ein
-marktorientiertes Verstaendnis ... zur Marktanalyse und Priorisierung
-der Kernkraftwerkstypen und Kunden abhaengig von Erfolgschance" as
-desirable -- this module is a real, explicit, testable implementation
-of exactly that idea: a scoring function that combines multiple real
-market-relevant signals into a single comparable priority score,
-rather than leaving prioritization as an implicit, undocumented
-judgment call.
+Priority scoring for business opportunities: a market-oriented way to
+prioritize nuclear plant types and customers by likelihood of success.
+This module is an explicit, testable scoring function that combines
+multiple market-relevant signals into a single comparable priority
+score, rather than leaving prioritization as an implicit,
+undocumented judgment call.
 
-The specific weights and signals below are a defensible, illustrative
-model of what would actually matter for prioritizing outage-service
-opportunities -- not a real Framatome scoring methodology (which I
-have no access to and would not fabricate a claim to).
+The specific weights and signals below are an illustrative model of
+what matters for prioritizing outage-service opportunities.
 """
 from dataclasses import dataclass
 

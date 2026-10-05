@@ -1,16 +1,13 @@
 """
-Real SQLite schema for a nuclear-plant-outage-service business
-opportunity database: plants, customers/operators, outage events, and
-opportunities scored against them. Built specifically for Framatome's
-"Werkstudent zur Erstellung einer Datenbank" posting, which asks for a
-SQL (or comparable) database for the "preliminary identification and
+SQLite schema for a nuclear-plant-outage-service business opportunity
+database: plants, customers/operators, outage events, and opportunities
+scored against them. It supports the preliminary identification and
 evaluation of business opportunities in the plant outage revision
-service" domain, designed for extension and automated exports.
+service domain, and is designed for extension and automated exports.
 
-Every table is designed to be extended (see README's "designed for
-extension" section) rather than a one-off flat table -- the posting
-explicitly asks for "Programmierung in einer Art, dass
-Erweiterungsmoeglichkeiten vorgesehen werden."
+Every table is designed to be extended rather than being a one-off flat
+table, so new tables and columns can be added without restructuring
+what is there.
 """
 import sqlite3
 

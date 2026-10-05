@@ -1,10 +1,8 @@
 """
-Automated exports: the posting explicitly asks for "automatisierte
-Auszuege" (automated extracts) as a design requirement, not just
-manual ad-hoc queries. This module provides real, tested CSV export of
-the opportunities view -- a genuine, runnable equivalent of the kind
-of scheduled report a real business-development team would pull from
-this database.
+Automated exports: scheduled-style extracts are a design requirement for
+this database, not just manual ad-hoc queries. This module provides a
+tested CSV export of the opportunities view -- the kind of scheduled
+report a business-development team would pull from this database.
 """
 import csv
 import io
